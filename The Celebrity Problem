@@ -1,0 +1,52 @@
+A celebrity is a person who is known to all but does not know anyone at a party. If you go to a party of N people, find if there is a celebrity in the party or not.
+A square NxN matrix M[][] is used to represent people at the party such that if an element of row i and column j  is set to 1 it means ith person knows jth person. Here M[i][i] will always be 0.
+Note: Follow 0 based indexing.
+Follow Up: Can you optimize it to O(N)
+ 
+
+Example 1:
+
+Input:
+N = 3
+M[][] = {{0 1 0},
+         {0 0 0}, 
+         {0 1 0}}
+Output: 1
+Explanation: 0th and 2nd person both
+know 1. Therefore, 1 is the celebrity. 
+
+
+
+def findCelebrity(N, M):
+    left, right = 0, N - 1
+
+    # Find the potential celebrity using two pointers
+    while left < right:
+        if M[left][right] == 1:
+            left = right + 1
+        else:
+            right = left
+
+    celebrity = left
+
+    # Verify if the celebrity is indeed a celebrity
+    for i in range(N):
+        if i != celebrity:
+            if M[celebrity][i] == 1 or M[i][celebrity] == 0:
+                return -1  # Not a celebrity
+
+    return celebrity
+
+# Example usage
+N = 3
+M = [
+    [0, 1, 0],
+    [0, 0, 0],
+    [0, 1, 0]
+]
+
+result = findCelebrity(N, M)
+if result != -1:
+    print("Celebrity is person", result)
+else:
+    print("No celebrity found")
